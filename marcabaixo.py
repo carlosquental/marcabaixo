@@ -60,6 +60,27 @@ def ol(texto):
 
 resultado = sys.argv[1].split('.', 1)[0] + '.html'
 print(resultado)
-print(compilar(texto))
+#print(compilar(texto))
 with open(resultado, 'w') as wf:
     wf.write(compilar(texto))
+
+lista_palavras = []
+with open(resultado, 'r') as final:
+    texto = final.readlines()
+    
+    for linha in texto:
+        lista_palavras += linha.split('\n')
+
+lista_palavras = [x for x in lista_palavras if x]
+print(lista_palavras)
+pos_compilado = ''
+for i in range(len(lista_palavras)):
+    #print(lista_palavras[i])
+    if lista_palavras[i][-5:] == '</li>' and lista_palavras[i+1][:4] != '<li>':
+        lista_palavras[i] += '</ul></ol>'
+    pos_compilado += lista_palavras[i] + '\n'
+    
+print(pos_compilado)
+
+with open(resultado, 'w') as wf:
+    wf.write(pos_compilado)
