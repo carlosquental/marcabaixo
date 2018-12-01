@@ -1,23 +1,10 @@
 import re
+import sys
 
-texto = '''
-# capitulo teste1
-## secção teste 1
-### subsecção teste 1
-*teste2*
-**teste3**
-_teste4_
-__teste5__
-!titulo da minha pagina!
-- teste
-- teste
-- teste
-1. teste
-2. teste
-31234. teste
-
-texto sem tags
-'''
+texto = sys.argv[1]
+with open(texto, 'r') as texto:
+    texto = texto.read()
+    print(texto, '\n\n')
 
 def compilar(texto):
     texto = negrito(texto)
@@ -71,7 +58,8 @@ def ol(texto):
     texto = re.sub(r'[0-9]+\.(.*)', '<li>\\1</li>', texto)
     return texto
 
-
+resultado = sys.argv[1].split('.', 1)[0] + '.html'
+print(resultado)
 print(compilar(texto))
-with open('teste.html', 'w') as wf:
+with open(resultado, 'w') as wf:
     wf.write(compilar(texto))
