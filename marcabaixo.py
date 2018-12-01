@@ -2,6 +2,8 @@ import re
 import sys
 
 texto = sys.argv[1]
+estilo = sys.argv[2] if len(sys.argv) > 2 else ''
+print("estilo:", estilo)
 with open(texto, 'r') as texto:
     texto = texto.read()
     print(texto, '\n\n')
@@ -71,16 +73,35 @@ with open(resultado, 'r') as final:
     for linha in texto:
         lista_palavras += linha.split('\n')
 
+novo_titulo = ''
 lista_palavras = [x for x in lista_palavras if x]
+lista_palavras += ['']
 print(lista_palavras)
 pos_compilado = ''
 for i in range(len(lista_palavras)):
     #print(lista_palavras[i])
     if lista_palavras[i][-5:] == '</li>' and lista_palavras[i+1][:4] != '<li>':
         lista_palavras[i] += '</ul></ol>'
-    pos_compilado += lista_palavras[i] + '\n'
-    
-print(pos_compilado)
 
+    if '<title>' in lista_palavras[i]:
+        novo_titulo = lista_palavras[i]
+        lista_palavras[i] = ''
+        
+    pos_compilado += lista_palavras[i] + '\n'
+
+
+header = '''<html>
+<head>
+''' + novo_titulo + '''
+<link rel="stylesheet" href="''' + estilo + '''">
+</head>
+<body>
+'''
+footer = '''</body>
+</html>'''
+
+pos_compilado = header + pos_compilado + footer
+
+print(pos_compilado)
 with open(resultado, 'w') as wf:
     wf.write(pos_compilado)
