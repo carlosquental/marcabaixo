@@ -9,6 +9,7 @@ with open(texto, 'r') as texto:
     print(texto, '\n\n')
 
 def compilar(texto):
+    texto = negitalico(texto)
     texto = negrito(texto)
     texto = italico(texto)
     texto = paragrafo(texto)
@@ -18,6 +19,11 @@ def compilar(texto):
     texto = titulo(texto)
     texto = ul(texto)
     texto = ol(texto)
+    return texto
+
+def negitalico(texto):
+    texto = re.sub(r'\*{3}(.*)\*{3}', '<strong><em>\\1</em></strong>', texto)
+    texto = re.sub(r'_{3}(.*)_{3}', '<strong><em>\\1</em></strong>', texto)
     return texto
 
 def negrito(texto):
